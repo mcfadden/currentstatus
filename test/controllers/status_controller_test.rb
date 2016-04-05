@@ -7,28 +7,66 @@ class StatusControllerTest < ActionController::TestCase
   end
 
   test "post should update status" do
-    get :index, status: "down", message: "Foo Bar"
-    assert_response :success
-    assert_not_nil assigns(:current_status)
-    assert_not_nil assigns(:recent_messages)
-    
-    assert_true # Actually updates the status
+    Status.update_current_status("up")
+    assert_difference(['Status.count', 'Message.count']) do
+      post :update, status: "down", message: "Foo Bar"
+      assert_response :success
+      
+      assert_equal false, Status.current_status.is_up
+      assert_equal "Foo Bar", Message.last.content
+      
+      assert_not_nil assigns(:current_status)
+      assert_not_nil assigns(:recent_messages)
+    end
+
   end
 
-  test "post with status or message key but no value" do
-    assert_true
+  test "post with only status or message" do
+    Status.update_current_status("up")
+    assert_difference(['Message.count']) do
+      post :update, message: "Foo Bar"
+      assert_response :success
+      
+      # Should not have updated the status, but it should have updated the message
+      assert_equal true, Status.current_status.is_up
+      assert_equal "Foo Bar", Message.last.content
+      
+      assert_not_nil assigns(:current_status)
+      assert_not_nil assigns(:recent_messages)
+    end
+
+    content = Message.last.content
+    assert_difference(['Status.count']) do
+      post :update, status: "down"
+      assert_response :success
+      
+      # Should have updated the status, but not the message
+      assert_equal false, Status.current_status.is_up
+      assert_equal content, Message.last.content
+      
+      assert_not_nil assigns(:current_status)
+      assert_not_nil assigns(:recent_messages)
+    end
   end
   
   test "post invalid status values" do
-    assert_true
+    post :update, status: "foobar"
+    assert_response :error
+    
+    post :update, status: ""
+    assert_response :error
+    
+    assert_not_nil assigns(:errors)
   end
   
   test "post with really long message" do
-    assert_true
+    post :update, message: ("Lorem ipsum dolor sit amet" * 50)
+    assert_response :success
   end
   
   test "post with fun characters" do
-    assert_true
+    post :update, message: "<blink>Hello Workd</blink>&amp;☺✌"
+    assert_response :success
   end
 
 end

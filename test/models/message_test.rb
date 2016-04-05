@@ -8,8 +8,4 @@ class MessageTest < ActiveSupport::TestCase
     message.content = "Lorem ipsum dolor sit amet"
     assert message.save
   end
-  
-  test "recent messages" do
-    assert_true
-  end
 end

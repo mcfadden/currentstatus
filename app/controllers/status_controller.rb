@@ -5,6 +5,9 @@ class StatusController < ApplicationController
   end
   
   def update
+    Status.update_current_status(params[:status]) if params[:status].present?
+    Message.create(content: params[:message]) if params[:message].present?
+
     load_status_and_messages
     render :index
   end
