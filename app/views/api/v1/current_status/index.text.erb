@@ -1,0 +1,8 @@
+<% if @error.present? %>
+Error: <%= @error %>
+<% end %>
+Current Status: <%= (@current_status && @current_status.is_up ? "up" : "down") %>
+Recent Messages:
+<% @recent_messages.each do |message| %>
+<%= message.created_at.strftime("%B %-d, %Y %-l:%M%P %Z") %> - <%= message.content %>
+<% end %>

@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   
-  # Rails really doesn't like having a format (ex, JSON) on the root route
-  # so I've added a duplicate /status route to make the JSON API simpler.
-  get '/status' => "status#index"
-  post '/status' => "status#update"
+  namespace :api do
+    namespace :v1 do
+      get '/current_status' => "current_status#index"
+      post '/current_status' => "current_status#update"
+    end
+  end
   
-  post '/' => 'status#update'  
-  root 'status#index'
+  root 'current_status#index'
 end
