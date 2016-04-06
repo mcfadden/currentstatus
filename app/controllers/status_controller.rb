@@ -5,11 +5,20 @@ class StatusController < ApplicationController
   end
   
   def update
-    Status.update_current_status(params[:status]) if params[:status].present?
+    if params[:status].present?
+      unless Status.update_current_status(params[:status])
+        @errors ||= []
+        @errors << "Invalid Status"
+      end
+    end
     Message.create(content: params[:message]) if params[:message].present?
 
     load_status_and_messages
-    render :index
+    if @errors.present?
+      render :index, status: 400
+    else
+      render :index
+    end
   end
   
   private

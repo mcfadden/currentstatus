@@ -51,10 +51,10 @@ class StatusControllerTest < ActionController::TestCase
   
   test "post invalid status values" do
     post :update, status: "foobar"
-    assert_response :error
+    assert_response 400
     
     post :update, status: ""
-    assert_response :error
+    assert_response 400
     
     assert_not_nil assigns(:errors)
   end
