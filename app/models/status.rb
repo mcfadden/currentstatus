@@ -18,7 +18,7 @@ class Status < ActiveRecord::Base
       end
     end
     unless clean_value.nil?
-      if Status.current_status.is_up? == clean_value
+      if Status.current_status && Status.current_status.is_up? == clean_value
         Status.current_status
       else
         Status.create(is_up: clean_value)

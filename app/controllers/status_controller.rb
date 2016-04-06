@@ -1,5 +1,7 @@
 class StatusController < ApplicationController
 
+  skip_before_action :verify_authenticity_token, only: :update
+
   def index
     load_status_and_messages
   end

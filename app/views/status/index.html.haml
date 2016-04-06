@@ -1,2 +1,21 @@
-= @current_status
-= @current_message
+.page-header
+  %h1 Current Status
+
+.jumbotron
+  %h1.text-center
+    - if @current_status && @current_status.is_up
+      .text-success
+        %span.glyphicon.glyphicon-ok
+        Up
+    - else
+      .text-danger
+        %span.glyphicon.glyphicon-warning-sign
+        Down
+
+.recent-messages
+  %table.table.table-striped
+    %tbody
+      - @recent_messages.each do |message|
+        %tr
+          %td= message.created_at.strftime("%B %-d, %Y %-l:%M%P %Z")
+          %td= message.content
