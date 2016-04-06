@@ -24,8 +24,6 @@ class StatusTest < ActiveSupport::TestCase
     assert_kind_of Status, Status.update_current_status("UP")
     assert_kind_of Status, Status.update_current_status("DOWN")
     assert_kind_of Status, Status.update_current_status("DoWn")
-    assert_kind_of Status, Status.update_current_status(false)
-    assert_kind_of Status, Status.update_current_status(true)
   end
   
   test "updating status to the current value" do
