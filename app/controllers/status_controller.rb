@@ -8,6 +8,8 @@ class StatusController < ApplicationController
   end
   
   def update
+    @error = "Must specify status, message, or both" if params[:message].blank? && params[:status].blank?
+    
     if params[:status].present?
       unless Status.update_current_status(params[:status])
         @error = "Invalid Status"

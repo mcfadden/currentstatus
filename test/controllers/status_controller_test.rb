@@ -47,6 +47,9 @@ class StatusControllerTest < ActionController::TestCase
     post :update, status: ""
     assert_response 400
     
+    post :update, randomKey: "Up"
+    assert_response 400
+    
     assert_not_nil assigns(:error)
   end
   
