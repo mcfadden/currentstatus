@@ -14,9 +14,6 @@ class StatusControllerTest < ActionController::TestCase
       
       assert_equal false, Status.current_status.is_up
       assert_equal "Foo Bar", Message.last.content
-      
-      assert_not_nil assigns(:current_status)
-      assert_not_nil assigns(:recent_messages)
     end
 
   end
@@ -30,9 +27,6 @@ class StatusControllerTest < ActionController::TestCase
       # Should not have updated the status, but it should have updated the message
       assert_equal true, Status.current_status.is_up
       assert_equal "Foo Bar", Message.last.content
-      
-      assert_not_nil assigns(:current_status)
-      assert_not_nil assigns(:recent_messages)
     end
 
     content = Message.last.content
@@ -43,9 +37,6 @@ class StatusControllerTest < ActionController::TestCase
       # Should have updated the status, but not the message
       assert_equal false, Status.current_status.is_up
       assert_equal content, Message.last.content
-      
-      assert_not_nil assigns(:current_status)
-      assert_not_nil assigns(:recent_messages)
     end
   end
   
@@ -56,7 +47,7 @@ class StatusControllerTest < ActionController::TestCase
     post :update, status: ""
     assert_response 400
     
-    assert_not_nil assigns(:errors)
+    assert_not_nil assigns(:error)
   end
   
   test "post with really long message" do

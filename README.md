@@ -24,40 +24,20 @@ The supported parameters are `status` and `message`. Both are optional.
     curl --data "status=up" http://currentstatus.dev
 
 
-JSON is supported too. If you use the `/status.json` endpoint you will receive a JSON response including the current status and recent messages.
+JSON is supported too.
     
-    curl -H "Content-Type: application/json" -X POST -d '{"status":"up","message":"fiz bam"}' http://currentstatus.dev/status.json
-    
-    curl -H "Content-Type: application/json" -X POST -d '{"status":"down"}' http://currentstatus.dev/status.json
-    
-    curl -H "Content-Type: application/json" -X POST -d '{"message":"Lorem ipsum dolor sit amet"}' http://currentstatus.dev/status.json
-    
-You may also GET `/status.json` and you will receive the current status and recent messages in JSON format.
+    curl -H "Content-Type: application/json" -X POST -d '{"status":"up","message":"fiz bam"}' http://currentstatus.dev/
 
 ### Errors
 
-If you post invalid data, you will get a non 200 status code response. If using the JSON endpoint an array of errors will be present in the `errors` key in the response.
+If you post invalid data, you will get a non 200 status code response with the body containing an error message
 
 Example:
 
-    curl -H "Content-Type: application/json" -X POST -d '{"status":"foobar"}' http://currentstatus.dev/status.json
+    curl -H "Content-Type: application/json" -X POST -d '{"status":"foobar"}' http://currentstatus.dev/
     
     # Response:
-    {
-      "current_status": "up",
-      "recent_messages": [
-        {
-          "content": "fiz bam",
-          "created_at": "2016-04-05T18:30:57.040Z"
-        },
-        ...
-      ],
-      "errors": [
-        "Invalid Status"
-      ]
-    }
-    
-    
+    "Invalid Status"
     
 # Testing
 
