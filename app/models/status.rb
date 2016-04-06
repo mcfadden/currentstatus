@@ -7,24 +7,17 @@ class Status < ActiveRecord::Base
   end
   
   def self.update_current_status(value)
-    clean_value = if value.kind_of?(FalseClass) || value.kind_of?(TrueClass)
-      value
-    elsif value.kind_of? String
-      case value.downcase
-      when "up"
-        true
-      when "down"
-        false
-      end
-    end
-    unless clean_value.nil?
-      if Status.current_status && Status.current_status.is_up? == clean_value
-        Status.current_status
+    value.downcase! if value.kind_of?(String)
+    if ["up", "down"].include?(value)
+      bool_value = ("up" == value)
+      if Status.current_status && Status.current_status.is_up? == bool_value
+        # If it's Up, and being set to Up, we don't actually need to update
+        # the current status
+        return Status.current_status
       else
-        Status.create(is_up: clean_value)
+        return Status.create(is_up: bool_value)
       end
-    else
-      return false
     end
+    return false
   end
 end
