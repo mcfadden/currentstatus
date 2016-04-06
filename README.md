@@ -2,6 +2,8 @@
 
 Overly simple status app that get's updated via a simple POST.
 
+![Current Status screenshot](app/assets/images/screenshot.png)
+
 # Updating The Status
 
 There are only two values: `status` and `message`. Both are optional.
